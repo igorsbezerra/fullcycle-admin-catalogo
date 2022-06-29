@@ -1,5 +1,7 @@
 package com.fullcycle.admin.catalogo.domain.category;
 
+import com.fullcycle.admin.catalogo.domain.exceptions.DomainException;
+import com.fullcycle.admin.catalogo.domain.validation.handler.ThrowValidationHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +37,10 @@ class CategoryTest {
         final var actualCategory =
                 Category.newCategory(expectedName, expectedDescription, expectedActive);
 
-        final var actualException = Assertions.assertThrows(DomainException.class, () -> actualCategory.validate());
+        final var actualException =
+                Assertions.assertThrows(DomainException.class, () -> actualCategory.validate(new ThrowValidationHandler()));
+
         Assertions.assertEquals(expectedErrorCount , actualException.getErrors().size());
-        Assertions.assertEquals(expectedErrorMessage , actualException.getErrors().get(0).getMessage());
+        Assertions.assertEquals(expectedErrorMessage , actualException.getErrors().get(0).message());
     }
 }
